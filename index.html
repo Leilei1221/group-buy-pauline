@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>幾隻貓🚩波琳小姐火烤蝴蝶酥 補貨團</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--gold:#c8860a;--brown:#5c3317;--cream:#FFF8F0;--warm:#f5e6d0;--accent:#d4a437;--red:#c0392b}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:var(--cream);color:#333;padding-bottom:90px}
+
+/* Header */
+.header{background:linear-gradient(135deg,#5c3317 0%,#8b5e3c 100%);color:#fff;text-align:center;padding:28px 16px 22px;position:relative;overflow:hidden}
+.header::after{content:'';position:absolute;bottom:-20px;left:0;right:0;height:40px;background:var(--cream);border-radius:50% 50% 0 0}
+.header h1{font-size:1.4rem;margin-bottom:4px;letter-spacing:1px}
+.header .subtitle{font-size:.85rem;opacity:.85;margin-bottom:10px}
+.badge-row{display:flex;justify-content:center;gap:8px;flex-wrap:wrap}
+.badge{background:var(--gold);color:#fff;font-size:.7rem;padding:3px 10px;border-radius:20px;font-weight:600}
+
+/* Countdown */
+.countdown-bar{background:linear-gradient(90deg,var(--brown),#8b5e3c);color:#fff;text-align:center;padding:10px;font-size:.85rem;position:sticky;top:0;z-index:100}
+.countdown-bar .time{font-weight:700;color:#ffd700;font-size:1rem}
+.countdown-bar.ended{background:var(--red)}
+
+/* Info */
+.info-box{max-width:600px;margin:16px auto;padding:0 12px}
+.info-card{background:#fff;border-radius:12px;padding:14px 16px;box-shadow:0 1px 4px rgba(0,0,0,.06);font-size:.82rem;line-height:1.7;color:#555}
+.info-card b{color:var(--brown)}
+
+/* Section */
+.section-title{max-width:600px;margin:20px auto 10px;padding:0 12px;font-size:1rem;font-weight:700;color:var(--brown);display:flex;align-items:center;gap:6px}
+.section-title::before{content:'';flex:0 0 4px;height:18px;background:var(--gold);border-radius:2px}
+.price-tag{margin-left:auto;font-size:.8rem;color:var(--gold);font-weight:600}
+
+/* Grid */
+.grid{max-width:600px;margin:0 auto;padding:0 10px;display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+@media(min-width:640px){.grid{grid-template-columns:repeat(3,1fr)}}
+
+/* Card */
+.card{background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.06);transition:transform .15s}
+.card:active{transform:scale(.97)}
+.card-img{width:100%;aspect-ratio:1;object-fit:cover;background:var(--warm)}
+.card-body{padding:10px 10px 12px}
+.card-name{font-size:.82rem;font-weight:600;color:var(--brown);line-height:1.3;min-height:2.2em}
+.card-spec{font-size:.68rem;color:#999;margin-top:2px}
+.card-prices{display:flex;align-items:baseline;gap:5px;margin-top:5px}
+.card-price{font-size:1rem;font-weight:700;color:var(--gold)}
+.card-orig{font-size:.72rem;color:#bbb;text-decoration:line-through}
+.qty-row{display:flex;align-items:center;gap:0;margin-top:8px}
+.qty-btn{width:32px;height:32px;border:none;border-radius:50%;font-size:1.2rem;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .15s}
+.qty-btn.minus{background:#f0e4d4;color:var(--brown)}
+.qty-btn.plus{background:var(--gold);color:#fff}
+.qty-btn:disabled{opacity:.3;cursor:default}
+.qty-val{flex:1;text-align:center;font-size:1rem;font-weight:700;color:var(--brown)}
+
+/* Floating bar */
+.float-bar{position:fixed;bottom:0;left:0;right:0;background:#fff;box-shadow:0 -2px 12px rgba(0,0,0,.1);padding:12px 16px;display:flex;align-items:center;z-index:200;gap:10px}
+.float-info{flex:1;font-size:.82rem;color:#666}
+.float-info .total{font-size:1.15rem;font-weight:700;color:var(--brown)}
+.float-btn{background:linear-gradient(135deg,var(--gold),#d4a437);color:#fff;border:none;border-radius:25px;padding:12px 24px;font-size:.95rem;font-weight:700;cursor:pointer;white-space:nowrap;transition:opacity .15s}
+.float-btn:disabled{opacity:.4;cursor:default}
+.float-btn.active{animation:pulse 1.5s infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(200,134,10,.4)}50%{box-shadow:0 0 0 8px rgba(200,134,10,0)}}
+
+/* Modal */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:300;justify-content:center;align-items:center;padding:16px}
+.modal-overlay.show{display:flex}
+.modal{background:#fff;border-radius:16px;max-width:480px;width:100%;max-height:85vh;overflow-y:auto;padding:24px 20px}
+.modal h2{font-size:1.1rem;color:var(--brown);margin-bottom:16px;text-align:center}
+.form-group{margin-bottom:14px}
+.form-group label{display:block;font-size:.82rem;font-weight:600;color:#555;margin-bottom:4px}
+.form-group input,.form-group textarea{width:100%;padding:10px 12px;border:1.5px solid #ddd;border-radius:8px;font-size:.9rem;transition:border-color .15s}
+.form-group input:focus,.form-group textarea:focus{outline:none;border-color:var(--gold)}
+.order-summary{background:var(--cream);border-radius:10px;padding:12px;margin-bottom:16px;font-size:.82rem;line-height:1.8}
+.order-summary .item{display:flex;justify-content:space-between}
+.order-summary .sum{border-top:1px solid #ddd;margin-top:6px;padding-top:6px;font-weight:700;font-size:.95rem;color:var(--brown)}
+.submit-btn{width:100%;padding:14px;border:none;border-radius:12px;background:linear-gradient(135deg,var(--brown),#8b5e3c);color:#fff;font-size:1rem;font-weight:700;cursor:pointer;transition:opacity .15s}
+.submit-btn:disabled{opacity:.5;cursor:default}
+.cancel-btn{width:100%;padding:10px;border:none;background:none;color:#999;font-size:.85rem;cursor:pointer;margin-top:8px}
+
+/* Success */
+.success-box{text-align:center;padding:20px 0}
+.success-box .check{font-size:3rem;margin-bottom:10px}
+.success-box h3{color:var(--brown);margin-bottom:8px}
+.success-detail{background:var(--cream);border-radius:10px;padding:14px;margin:16px 0;font-size:.82rem;line-height:1.8;text-align:left;white-space:pre-line}
+.copy-btn{background:var(--gold);color:#fff;border:none;border-radius:8px;padding:10px 20px;font-size:.85rem;cursor:pointer;margin-top:8px}
+
+/* Ended overlay */
+.ended-overlay{display:none;position:fixed;inset:0;background:rgba(92,51,23,.85);z-index:400;justify-content:center;align-items:center;flex-direction:column;color:#fff}
+.ended-overlay.show{display:flex}
+.ended-overlay h2{font-size:1.6rem;margin-bottom:8px}
+.ended-overlay p{opacity:.7;font-size:.9rem}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>🦋 波琳小姐火烤蝴蝶酥</h1>
+  <div class="subtitle">幾隻貓🚩補貨團</div>
+  <div class="badge-row">
+    <span class="badge">🔥 獨家火烤工藝</span>
+    <span class="badge">🇫🇷 法國依思尼奶油</span>
+    <span class="badge">🥛 奶素可食</span>
+  </div>
+</div>
+
+<div class="countdown-bar" id="countdownBar">
+  <span>⏰ 結單倒數：</span><span class="time" id="countdown"></span>
+</div>
+
+<div class="info-box">
+  <div class="info-card">
+    <b>📦 出貨</b>：11/13 結團後 10 個工作天內安排出貨<br>
+    <b>🤝 取貨</b>：面交<br>
+    <b>💰 付款</b>：面交時付款<br>
+    <b>📌 備註</b>：鐵盒裝，獨立包裝（一包2片），<b>不附提袋</b>
+  </div>
+</div>
+
+<div class="section-title">大盒（250g・約30-32片）<span class="price-tag">$504／盒</span></div>
+<div class="grid" id="gridBig"></div>
+
+<div class="section-title">小盒（130g・約14-16片）<span class="price-tag">$324／盒</span></div>
+<div class="grid" id="gridSmall"></div>
+
+<div class="section-title">配件</div>
+<div class="grid" id="gridAcc"></div>
+
+<div class="float-bar">
+  <div class="float-info">
+    已選 <span id="totalQty">0</span> 件 ＝ <span class="total">$<span id="totalPrice">0</span></span>
+  </div>
+  <button class="float-btn" id="checkoutBtn" disabled onclick="openModal()">前往結單</button>
+</div>
+
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <div id="formView">
+      <h2>🦋 確認訂單</h2>
+      <div class="order-summary" id="orderSummary"></div>
+      <div class="form-group">
+        <label>姓名 *</label>
+        <input type="text" id="inputName" placeholder="請輸入姓名" autocomplete="name">
+      </div>
+      <div class="form-group">
+        <label>備註（選填）</label>
+        <textarea id="inputNote" rows="2" placeholder="如有特殊需求請填寫"></textarea>
+      </div>
+      <button class="submit-btn" id="submitBtn" onclick="submitOrder()">確認送出訂單</button>
+      <button class="cancel-btn" onclick="closeModal()">返回修改</button>
+    </div>
+    <div id="successView" style="display:none">
+      <div class="success-box">
+        <div class="check">✅</div>
+        <h3>訂單已送出！</h3>
+        <p style="color:#888;font-size:.85rem">感謝訂購，面交時付款即可</p>
+        <div class="success-detail" id="successDetail"></div>
+        <button class="copy-btn" onclick="copyDetail()">📋 複製訂單明細</button>
+        <p id="copyHint" style="color:var(--gold);font-size:.78rem;margin-top:6px;opacity:0;transition:opacity .3s"></p>
+      </div>
+      <button class="cancel-btn" onclick="location.reload()">繼續訂購</button>
+    </div>
+  </div>
+</div>
+
+<div class="ended-overlay" id="endedOverlay">
+  <h2>🦋 本團已結單</h2>
+  <p>感謝支持，下次再會！</p>
+</div>
+
+<script>
+const GAS_URL = 'GAS_WEBAPP_URL_HERE';
+const DEADLINE = new Date('2026-11-13T16:00:00+08:00');
+
+const PRODUCTS = {
+  '大盒（250g）': [
+    { id:'p01', name:'綜合蝴蝶酥', desc:'原味＋椰子＋芝麻', price:504, orig:580, img:'images/p01.avif' },
+    { id:'p02', name:'原味蝴蝶酥', desc:'經典純原味', price:504, orig:580, img:'images/p02.avif' },
+    { id:'p03', name:'雙拼蝴蝶酥', desc:'原味＋芝麻', price:504, orig:580, img:'images/p03.avif' },
+    { id:'p04', name:'雙拼蝴蝶酥', desc:'原味＋椰子', price:504, orig:580, img:'images/p04.avif' },
+  ],
+  '小盒（130g）': [
+    { id:'p05', name:'原味蝴蝶酥', desc:'經典純原味', price:324, orig:380, img:'images/p05.avif' },
+    { id:'p06', name:'雙拼蝴蝶酥', desc:'原味＋芝麻', price:324, orig:380, img:'images/p06.avif' },
+    { id:'p07', name:'芝麻蝴蝶酥', desc:'純芝麻', price:324, orig:380, img:'images/p07.avif' },
+  ],
+  '配件': [
+    { id:'p08', name:'波琳小姐紙袋', desc:'可裝2小盒或1大盒', price:18, orig:20, img:'images/p08.avif' },
+  ]
+};
+
+const ALL = Object.values(PRODUCTS).flat();
+const qty = {};
+ALL.forEach(p => qty[p.id] = 0);
+
+function renderCards() {
+  const grids = { '大盒（250g）':'gridBig', '小盒（130g）':'gridSmall', '配件':'gridAcc' };
+  for (const [cat, gridId] of Object.entries(grids)) {
+    const grid = document.getElementById(gridId);
+    grid.innerHTML = PRODUCTS[cat].map(p => `
+      <div class="card">
+        <img class="card-img" src="${p.img}" alt="${p.name}" loading="lazy">
+        <div class="card-body">
+          <div class="card-name">${p.name}</div>
+          <div class="card-spec">${p.desc}</div>
+          <div class="card-prices">
+            <span class="card-price">$${p.price}</span>
+            <span class="card-orig">$${p.orig}</span>
+          </div>
+          <div class="qty-row">
+            <button class="qty-btn minus" onclick="changeQty('${p.id}',-1)" id="minus_${p.id}" disabled>−</button>
+            <span class="qty-val" id="qty_${p.id}">0</span>
+            <button class="qty-btn plus" onclick="changeQty('${p.id}',1)" id="plus_${p.id}">＋</button>
+          </div>
+        </div>
+      </div>
+    `).join('');
+  }
+}
+
+function changeQty(id, d) {
+  qty[id] = Math.max(0, qty[id] + d);
+  document.getElementById('qty_' + id).textContent = qty[id];
+  document.getElementById('minus_' + id).disabled = qty[id] === 0;
+  updateTotal();
+}
+
+function updateTotal() {
+  let totalQ = 0, totalP = 0;
+  ALL.forEach(p => { totalQ += qty[p.id]; totalP += qty[p.id] * p.price; });
+  document.getElementById('totalQty').textContent = totalQ;
+  document.getElementById('totalPrice').textContent = totalP.toLocaleString();
+  const btn = document.getElementById('checkoutBtn');
+  btn.disabled = totalQ === 0;
+  btn.classList.toggle('active', totalQ > 0);
+}
+
+function openModal() {
+  const items = ALL.filter(p => qty[p.id] > 0);
+  if (!items.length) return;
+  const total = items.reduce((s, p) => s + qty[p.id] * p.price, 0);
+  document.getElementById('orderSummary').innerHTML =
+    items.map(p => `<div class="item"><span>${p.name}（${p.desc}）× ${qty[p.id]}</span><span>$${(qty[p.id]*p.price).toLocaleString()}</span></div>`).join('') +
+    `<div class="item sum"><span>合計</span><span>$${total.toLocaleString()}</span></div>`;
+  document.getElementById('formView').style.display = '';
+  document.getElementById('successView').style.display = 'none';
+  document.getElementById('modalOverlay').classList.add('show');
+}
+
+function closeModal() { document.getElementById('modalOverlay').classList.remove('show'); }
+
+async function submitOrder() {
+  const name = document.getElementById('inputName').value.trim();
+  if (!name) { document.getElementById('inputName').focus(); return alert('請輸入姓名'); }
+  const note = document.getElementById('inputNote').value.trim();
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = true; btn.textContent = '送出中…';
+
+  const items = ALL.filter(p => qty[p.id] > 0);
+  const total = items.reduce((s, p) => s + qty[p.id] * p.price, 0);
+  const summary = items.map(p => `${p.name}(${p.desc})×${qty[p.id]}`).join('、');
+
+  const params = new URLSearchParams({ name, summary, total, note });
+  ALL.forEach(p => { if (qty[p.id] > 0) params.append(p.id, qty[p.id]); });
+
+  try {
+    await fetch(GAS_URL, { method:'POST', body:params, mode:'no-cors' });
+    const detail = `${name} 你好！\n訂購明細：\n` +
+      items.map(p => `• ${p.name}（${p.desc}）× ${qty[p.id]}　$${(qty[p.id]*p.price).toLocaleString()}`).join('\n') +
+      `\n總金額：$${total.toLocaleString()}` + (note ? `\n備註：${note}` : '');
+    document.getElementById('successDetail').textContent = detail;
+    document.getElementById('formView').style.display = 'none';
+    document.getElementById('successView').style.display = '';
+    window._lastDetail = detail;
+  } catch(e) {
+    alert('送出失敗，請稍後再試');
+    btn.disabled = false; btn.textContent = '確認送出訂單';
+  }
+}
+
+function copyDetail() {
+  navigator.clipboard.writeText(window._lastDetail || '').then(() => {
+    const h = document.getElementById('copyHint');
+    h.textContent = '已複製！'; h.style.opacity = 1;
+    setTimeout(() => h.style.opacity = 0, 2000);
+  });
+}
+
+// Countdown
+function updateCountdown() {
+  const now = new Date(), diff = DEADLINE - now;
+  const bar = document.getElementById('countdownBar');
+  if (diff <= 0) {
+    bar.classList.add('ended');
+    document.getElementById('countdown').textContent = '已結單';
+    document.getElementById('endedOverlay').classList.add('show');
+    document.querySelectorAll('.qty-btn.plus').forEach(b => b.disabled = true);
+    document.getElementById('checkoutBtn').disabled = true;
+    return;
+  }
+  const d = Math.floor(diff/864e5), h = Math.floor(diff%864e5/36e5),
+        m = Math.floor(diff%36e5/6e4), s = Math.floor(diff%6e4/1e3);
+  document.getElementById('countdown').textContent =
+    (d > 0 ? d+'天 ' : '') + h+'時 '+m+'分 '+s+'秒';
+}
+
+renderCards();
+updateCountdown();
+setInterval(updateCountdown, 1000);
+</script>
+</body>
+</html>
